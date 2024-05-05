@@ -4,7 +4,7 @@
 ## 说明书 How to use？
 使用方法很简单：
 
-1. 将这个``crawler.py``放进一个文本编辑器里，最好是``pycharm``；
+1. 将这个``crawler.py``放进一个文本编辑器里，最好是``PyCharm``；
 2. 填写好自己的GitHub tokens（个人令牌）；
 3. 然后运行这个程序；
 4. 终端（Terminal）会提示你输入需要爬取和解析的（public）仓库（repo）的URL（链接），输入即可；
