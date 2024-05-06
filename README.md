@@ -1,5 +1,5 @@
 # CnA: Crawler & Analyst
-`KaiHuang · Crawler & Analyst`, 即开荒行动中所包含的名为“GitHub项目的爬取与分析”的项目。
+`KaiHuang · Crawler & Analyst`, 即开荒行动中所包含的名为``“GitHub项目的爬取与分析”``的子项目。
 
 ## 说明书 How to use？
 使用方法很简单：
