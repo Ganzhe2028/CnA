@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GitHub Repo Crawler</title>
+    <style>
+        .notification {
+            visibility: hidden;
+            min-width: 300px;
+            background-color: #34c134;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            padding: 20px;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 30px;
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            font-size: 16px;
+        }
+        .notification.show {
+            visibility: visible;
+            transform: translateX(30px);
+            opacity: 1;
+        }
+        .notification.hide {
+            visibility: hidden;
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        .content-container {
+            margin-top: 20px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            cursor: pointer;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .btn-expand {
+            background-color: #007bff;
+        }
+        .btn-copy {
+            background-color: #007bff;
+        }
+        .btn-download {
+            background-color: #0668b2;
+            text-decoration: none;
+        }
+        .collapsed {
+            display: none;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+    <script>
+        function toggleContent() {
+            var content = document.getElementById('repo_content');
+            var button = document.getElementById('toggle_button');
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                button.textContent = 'Collapse Content';
+            } else {
+                content.classList.add('collapsed');
+                button.textContent = 'Expand Content';
+            }
+        }
+
+        function copyToClipboard() {
+            var content = document.getElementById('repo_content').innerText;
+            navigator.clipboard.writeText(content).then(function() {
+                var notification = document.getElementById('notification');
+                notification.className = "notification show";
+                setTimeout(function(){
+                    notification.className = "notification hide";
+                }, 3000);
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div style="width: 600px; margin: 50px auto;">
+        <h1>GitHub Repo Crawler</h1>
+        <form method="post">
+            <div>
+                <label for="access_token">GitHub Personal Access Token:</label>
+                <input type="text" id="access_token" name="access_token" value="{{ access_token }}" style="width: 100%;">
+            </div>
+            <div style="margin-top: 20px;">
+                <label for="repo_url">GitHub Repository URL:</label>
+                <input type="text" id="repo_url" name="repo_url" value="{{ repo_url }}" style="width: 100%;">
+            </div>
+            <div style="margin-top: 20px;">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <div class="content-container">
+            <h2>Repository Contents:</h2>
+            {% if tree_content %}
+            <div class="button-group">
+                <button id="toggle_button" class="btn btn-expand" onclick="toggleContent()">Expand Content</button>
+                <button class="btn btn-copy" onclick="copyToClipboard()">Copy Content</button>
+                <a href="{{ url_for('download') }}" class="btn btn-download">Download as TXT</a>
+            </div>
+            <pre id="repo_content" class="collapsed">{{ tree_content }}</pre>
+            {% endif %}
+        </div>
+        <div id="notification" class="notification">Content copied to clipboard</div>
+    </div>
+</body>
+</html>
